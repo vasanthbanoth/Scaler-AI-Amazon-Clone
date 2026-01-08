@@ -1,0 +1,440 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Amazon Clone API", "version": "0.1.0" },
+  "paths": {
+    "/api/products/": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get Products",
+        "operationId": "get_products_api_products__get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Search"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Product" },
+                  "title": "Response Get Products Api Products  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{product_id}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get Product",
+        "operationId": "get_product_api_products__product_id__get",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Product Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/": {
+      "get": {
+        "tags": ["Cart"],
+        "summary": "Get Cart",
+        "operationId": "get_cart_api_cart__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/CartItem" },
+                  "type": "array",
+                  "title": "Response Get Cart Api Cart  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Cart"],
+        "summary": "Add To Cart",
+        "operationId": "add_to_cart_api_cart__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CartItemCreate" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CartItem" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/{item_id}": {
+      "put": {
+        "tags": ["Cart"],
+        "summary": "Update Cart Item",
+        "operationId": "update_cart_item_api_cart__item_id__put",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Item Id" }
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Quantity" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CartItem" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cart"],
+        "summary": "Delete Cart Item",
+        "operationId": "delete_cart_item_api_cart__item_id__delete",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get Orders",
+        "operationId": "get_orders_api_orders__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/Order" },
+                  "type": "array",
+                  "title": "Response Get Orders Api Orders  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Place Order",
+        "operationId": "place_order_api_orders__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OrderCreate" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/{order_id}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get Order",
+        "operationId": "get_order_api_orders__order_id__get",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Order Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CartItem": {
+        "properties": {
+          "product_id": { "type": "integer", "title": "Product Id" },
+          "quantity": { "type": "integer", "title": "Quantity" },
+          "id": { "type": "integer", "title": "Id" },
+          "product": { "$ref": "#/components/schemas/Product" }
+        },
+        "type": "object",
+        "required": ["product_id", "quantity", "id", "product"],
+        "title": "CartItem"
+      },
+      "CartItemCreate": {
+        "properties": {
+          "product_id": { "type": "integer", "title": "Product Id" },
+          "quantity": { "type": "integer", "title": "Quantity" }
+        },
+        "type": "object",
+        "required": ["product_id", "quantity"],
+        "title": "CartItemCreate"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Order": {
+        "properties": {
+          "shipping_address": { "type": "string", "title": "Shipping Address" },
+          "id": { "type": "integer", "title": "Id" },
+          "total_amount": { "type": "number", "title": "Total Amount" },
+          "status": { "type": "string", "title": "Status" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "items": {
+            "items": { "$ref": "#/components/schemas/OrderItem" },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "shipping_address",
+          "id",
+          "total_amount",
+          "status",
+          "created_at",
+          "items"
+        ],
+        "title": "Order"
+      },
+      "OrderCreate": {
+        "properties": {
+          "shipping_address": { "type": "string", "title": "Shipping Address" }
+        },
+        "type": "object",
+        "required": ["shipping_address"],
+        "title": "OrderCreate"
+      },
+      "OrderItem": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "product_id": { "type": "integer", "title": "Product Id" },
+          "quantity": { "type": "integer", "title": "Quantity" },
+          "price_at_order": { "type": "number", "title": "Price At Order" },
+          "product": { "$ref": "#/components/schemas/Product" }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "product_id",
+          "quantity",
+          "price_at_order",
+          "product"
+        ],
+        "title": "OrderItem"
+      },
+      "Product": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "price": { "type": "number", "title": "Price" },
+          "stock": { "type": "integer", "title": "Stock" },
+          "category": { "type": "string", "title": "Category" },
+          "image_main": { "type": "string", "title": "Image Main" },
+          "images": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Images"
+          },
+          "specifications": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "title": "Specifications"
+          },
+          "id": { "type": "integer", "title": "Id" }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "price",
+          "stock",
+          "category",
+          "image_main",
+          "images",
+          "specifications",
+          "id"
+        ],
+        "title": "Product"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
