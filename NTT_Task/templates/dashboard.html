@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NTT DATA - AI BDD</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0e1117;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background: #ff4b4b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #262730;
+            padding: 20px;
+            border-radius: 10px;
+            height: fit-content;
+        }
+
+        .main {
+            flex: 1;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            background: #0e1117;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        pre {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+
+        .status-box {
+            padding: 15px;
+            background: #1e1e1e;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #ff4b4b;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h2>🤖 AI-Driven BDD Functional Testing</h2>
+        <a href="/logout" style="color: #ff4b4b; text-decoration: none;">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Configuration</h3>
+            <label>Target URL</label>
+            <input type="text" id="url" value="https://www.saucedemo.com/">
+
+            <label>Business Requirements</label>
+            <textarea id="reqs" rows="6">Test the login page.
+Positive: Valid user logs in.
+Negative: Invalid user sees error.</textarea>
+
+            <button class="btn-primary" onclick="generateScenarios()" style="width:100%">Analyze & Generate</button>
+        </div>
+
+        <div class="main">
+            <div id="step2" style="display:none;">
+                <h3>Generated Gherkin Scenarios</h3>
+                <textarea id="gherkin-output" rows="15"></textarea>
+
+                <div style="margin-top: 20px; border-top: 1px solid #333; padding-top: 20px;">
+                    <h3>Automated Execution</h3>
+                    <p>Target: <span id="target-display"></span></p>
+                    <button class="btn-primary" onclick="runTests()">🚀 Approve & Run Tests</button>
+                </div>
+            </div>
+
+            <div id="status-box" class="status-box">
+                <div style="display:flex; align-items:center;">
+                    <div id="spinner" class="spinner"></div>
+                    <span id="status-text">Executing...</span>
+                </div>
+                <pre id="execution-logs" style="margin-top:15px; display:none;"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function generateScenarios() {
+            const url = document.getElementById('url').value;
+            const reqs = document.getElementById('reqs').value;
+
+            document.getElementById('status-box').style.display = 'block';
+            document.getElementById('status-text').innerText = 'Consulting AI Agent...';
+            document.getElementById('spinner').style.display = 'inline-block';
+
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, reqs })
+            });
+            const data = await response.json();
+
+            document.getElementById('status-box').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+            document.getElementById('gherkin-output').value = data.scenario;
+            document.getElementById('target-display').innerText = url;
+        }
+
+        async function runTests() {
+            document.getElementById('status-box').style.display = 'block';
+            document.getElementById('status-text').innerText = 'Initializing Browser & Running Tests...';
+            document.getElementById('spinner').style.display = 'inline-block';
+            document.getElementById('execution-logs').style.display = 'none';
+
+            const response = await fetch('/api/run', { method: 'POST' });
+            const data = await response.json();
+
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('status-text').innerText = 'Execution Complete!';
+            document.getElementById('execution-logs').innerText = data.logs;
+            document.getElementById('execution-logs').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
