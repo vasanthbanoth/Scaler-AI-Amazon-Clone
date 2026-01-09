@@ -1,4 +1,36 @@
-# Amazon Clone - E-Commerce Platform
+# NTT DATA - Demo Task
+
+This repository contains the code for the AI-Driven BDD Functional Testing demo.
+
+## 📂 Project Location
+
+The main project code is located in the **[NTT_Task](./NTT_Task)** directory.
+
+## 🚀 How to Run Locally
+
+1. **Navigate to the project folder:**
+   ```bash
+   cd NTT_Task
+   ```
+
+2. **Install Dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   playwright install
+   ```
+
+3. **Run the Application:**
+   ```bash
+   streamlit run dashboard.py
+   ```
+
+## ☁️ Deployment
+*   **Vercel**: Deployed via Flask (`app.py`).
+*   **Local**: Run via Streamlit.
+
+---
+
+# Scaler-AI-Amazon-Clone
 
 This is a full-stack e-commerce application built to replicate the Amazon shopping experience. It features a modern tech stack with a FastAPI backend, Next.js frontend, and Nginx reverse proxy, all containerized with Docker.
 
@@ -34,7 +66,7 @@ This is a full-stack e-commerce application built to replicate the Amazon shoppi
 ### 1. Create Docker Compose File
 Create a `docker-compose.yaml` file in your project root and paste the following content:
 
-```yaml
+\`\`\`yaml
 services:
   backend:
     build:
@@ -76,14 +108,14 @@ services:
 networks:
   amazon-clone-net:
     driver: bridge
-```
+\`\`\`
 
 ### 2. Run the Application
 Open your terminal in the directory containing the `docker-compose.yaml` and run:
 
-```bash
+\`\`\`bash
 docker-compose up --build
-```
+\`\`\`
 
 ### 3. Access the Platform
 Once the containers are running, you can access the application at:
@@ -91,7 +123,7 @@ Once the containers are running, you can access the application at:
 
 ## Project Structure
 
-```text
+\`\`\`text
 .
 ├── database/        # Database models and configuration
 ├── models/          # Pydantic schemas for API
@@ -103,7 +135,7 @@ Once the containers are running, you can access the application at:
 │   └── src/components/ # Reusable UI components
 ├── main.py          # FastAPI entry point
 └── docker-compose.yaml
-```
+\`\`\`
 
 ## Assumptions
 - **Authentication**: A default user is assumed to be logged in for cart and order operations.
